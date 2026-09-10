@@ -20,3 +20,8 @@ __pycache__/
 # data
 *.sqlite3
 *.db
+
+# node / workers
+node_modules/
+.wrangler/
+*.tsbuildinfo
