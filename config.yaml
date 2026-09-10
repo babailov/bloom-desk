@@ -218,7 +218,9 @@ defi:
 
 refs:              # RATE REFS panel: the comparables Midnight fixed rates are judged against
   aave:            # v3 markets via eth_call getReserveData; ids/labels derive from chain+symbol
-    - { chain: BASE, rpc: "https://mainnet.base.org",
+    # mainnet.base.org 429s Cloudflare egress IPs (verified 2026-09-10); publicnode
+    # answers, and matches what the ETH markets below already use.
+    - { chain: BASE, rpc: "https://base-rpc.publicnode.com",
         pool: "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5", symbol: USDC,
         asset: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913" }
     - { chain: ETH, rpc: "https://ethereum-rpc.publicnode.com",
