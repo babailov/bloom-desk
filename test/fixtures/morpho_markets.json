@@ -1,0 +1,125 @@
+{
+  "data": {
+    "markets": {
+      "items": [
+        {
+          "marketId": "0x9103c3b4e834476c9a62ea009ba2c884ee42e94e6e314a26f04d312434191836",
+          "lltv": "860000000000000000",
+          "chain": { "id": 8453 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": { "symbol": "cbBTC" },
+          "state": {
+            "supplyApy": 0.048979797837720225,
+            "borrowApy": 0.054311798878969746,
+            "utilization": 0.9041344372830398,
+            "supplyAssetsUsd": 1413119205.7988927
+          }
+        },
+        {
+          "marketId": "0x64d65c9a2d91c36d56fbc42d69e979335320169b3df63bf92789e2c8883fcc64",
+          "lltv": "860000000000000000",
+          "chain": { "id": 1 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": { "symbol": "cbBTC" },
+          "state": {
+            "supplyApy": 0.03562659492450451,
+            "borrowApy": 0.03967178778164324,
+            "utilization": 0.8997964804687608,
+            "supplyAssetsUsd": 281792454.40783554
+          }
+        },
+        {
+          "marketId": "0x54cf9be57fdfa6457a660991907434ff9d295c465a603a50126ff647d50b7354",
+          "lltv": "915000000000000000",
+          "chain": { "id": 8453 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": { "symbol": "USDe" },
+          "state": {
+            "supplyApy": 0.03403610919347515,
+            "borrowApy": 0.03784038220863287,
+            "utilization": 0.9011280668706729,
+            "supplyAssetsUsd": 237150624.77220368
+          }
+        },
+        {
+          "marketId": "0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49",
+          "lltv": "860000000000000000",
+          "chain": { "id": 1 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": { "symbol": "WBTC" },
+          "state": {
+            "supplyApy": 0.03561820253955699,
+            "borrowApy": 0.03966202540600457,
+            "utilization": 0.8998053578043052,
+            "supplyAssetsUsd": 117986409.15798734
+          }
+        },
+        {
+          "marketId": "0x8793cf302b8ffd655ab97bd1c695dbd967807e8367a65cb2f4edaf1380ba1bda",
+          "lltv": "860000000000000000",
+          "chain": { "id": 8453 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": { "symbol": "WETH" },
+          "state": {
+            "supplyApy": 0.04898943112591128,
+            "borrowApy": 0.05432284048985615,
+            "utilization": 0.9041290477346389,
+            "supplyAssetsUsd": 76861101.54652077
+          }
+        },
+        {
+          "marketId": "0xidlemarket00000000000000000000000000000000000000000000000000",
+          "lltv": "860000000000000000",
+          "chain": { "id": 8453 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": null,
+          "state": {
+            "supplyApy": 0.0,
+            "borrowApy": 0.0,
+            "utilization": 0.0,
+            "supplyAssetsUsd": 0.0
+          }
+        },
+        {
+          "marketId": "0xunknownchain0000000000000000000000000000000000000000000000000",
+          "lltv": "860000000000000000",
+          "chain": { "id": 999 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": { "symbol": "WETH" },
+          "state": {
+            "supplyApy": 0.05,
+            "borrowApy": 0.06,
+            "utilization": 0.9,
+            "supplyAssetsUsd": 5000000.0
+          }
+        },
+        {
+          "marketId": "0x23a7d0ff682b323363fb8ba58327ed87001f6306e09b7fd7413bbe4698e749c8",
+          "lltv": "860000000000000000",
+          "chain": { "id": 1 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": { "symbol": "msY" },
+          "state": {
+            "supplyApy": 2979.9579868427436,
+            "borrowApy": 2979.9579868427436,
+            "utilization": 1,
+            "supplyAssetsUsd": 34546850.56156106
+          }
+        },
+        {
+          "marketId": "0x24852d8d7464402ddcd717415e009d42bf7427d6a8893487f83c75ee0f4a0ea6",
+          "lltv": "625000000000000000",
+          "chain": { "id": 1 },
+          "loanAsset": { "symbol": "USDC" },
+          "collateralAsset": { "symbol": "dCOMP" },
+          "state": {
+            "supplyApy": 0.10470639055352464,
+            "borrowApy": 0.13603793838014336,
+            "utilization": 0.7807304708339263,
+            "supplyAssetsUsd": 13822600.932563726
+          }
+        }
+      ]
+    }
+  }
+}

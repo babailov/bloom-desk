@@ -1,0 +1,54 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "timestamp": "2024-03-10T23:01:20.944Z",
+      "tvlUsd": 641020,
+      "apy": 13.42682,
+      "apyBase": 13.42682,
+      "apyReward": null
+    },
+    {
+      "timestamp": "2024-03-11T23:01:20.711Z",
+      "tvlUsd": 666932,
+      "apy": 11.6648,
+      "apyBase": 11.6648,
+      "apyReward": null
+    },
+    {
+      "timestamp": "2024-03-12T23:01:24.197Z",
+      "tvlUsd": 713120,
+      "apy": 9.59911,
+      "apyBase": 9.59911,
+      "apyReward": null
+    },
+    {
+      "timestamp": "2024-06-01T12:00:00.000Z",
+      "tvlUsd": 500000,
+      "apy": null,
+      "apyBase": null,
+      "apyReward": null
+    },
+    {
+      "timestamp": "2024-06-18T23:00:58.384Z",
+      "tvlUsd": 4409260,
+      "apy": 6.53218,
+      "apyBase": 6.53218,
+      "apyReward": null
+    },
+    {
+      "timestamp": "2025-07-23T23:04:02.622Z",
+      "tvlUsd": 15995073,
+      "apy": 4.88279,
+      "apyBase": 4.88279,
+      "apyReward": null
+    },
+    {
+      "timestamp": "2026-07-23T06:01:09.620Z",
+      "tvlUsd": 42930747,
+      "apy": 2.7346,
+      "apyBase": 2.7346,
+      "apyReward": null
+    }
+  ]
+}

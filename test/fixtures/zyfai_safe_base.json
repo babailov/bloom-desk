@@ -1,0 +1,46 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "id": 6329374,
+      "protocol_name": "Morpho",
+      "pool_name": "Clearstar cbAssets Vault",
+      "pool_apy": 4.166370177214227,
+      "rewards_apy": 3.811545680433584,
+      "combined_apy": 7.977915857647811,
+      "strategy_type": "safe",
+      "chain_id": 8453,
+      "url": "https://app.morpho.org/base/vault/0x91C056B6d4311a743614FBc03ac32d4E6A2d3a3c/clearstar-cbassets-vault",
+      "status": "live",
+      "pool_address": "0x91C056B6d4311a743614FBc03ac32d4E6A2d3a3c",
+      "token_symbol": "USDC",
+      "tvlUsd": 10732971.31491206,
+      "averageCombinedApy7Days": 6.542457503857143,
+      "averageCombinedApy30Days": 7.029361693871795
+    },
+    {
+      "id": 169139,
+      "protocol_name": "Compound V3",
+      "pool_name": "USDC",
+      "combined_apy": 7.5946042100592,
+      "strategy_type": "safe",
+      "chain_id": 8453,
+      "url": "https://app.compound.finance/markets/usdc-basemainnet",
+      "status": "live",
+      "pool_address": "0xb125E6687d4313864e53df431d5425969c15Eb2F",
+      "token_symbol": "USDC",
+      "tvlUsd": 8376957.348541585,
+      "averageCombinedApy7Days": null,
+      "averageCombinedApy30Days": null
+    },
+    {
+      "id": 999999,
+      "protocol_name": "BrokenProto",
+      "pool_name": "malformed row - combined_apy missing",
+      "strategy_type": "safe",
+      "chain_id": 8453,
+      "pool_address": "0x0000000000000000000000000000000000000bad",
+      "status": "live"
+    }
+  ]
+}

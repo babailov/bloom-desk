@@ -1,0 +1,13 @@
+{
+  "id": "8453-0xa97bb0de338b23c088dba9bf8c948da726e49033",
+  "chainId": 8453,
+  "address": "0xa97bb0de338b23c088dba9bf8c948da726e49033",
+  "symbol": "PENDLE-LPT",
+  "expiry": "2026-09-17T00:00:00.000Z",
+  "protocol": "Morpho",
+  "underlyingInterestApy": 0.043462301990022434,
+  "underlyingApy": 0.043462301990022434,
+  "impliedApy": 0.04475867335355943,
+  "ptDiscount": 0.006661979230210613,
+  "dataUpdatedAt": "2026-07-23T06:43:00.000Z"
+}

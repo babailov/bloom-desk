@@ -1,0 +1,48 @@
+{
+  "cursor": null,
+  "data": [
+    {
+      "market_id": "0x1111111111111111111111111111111111111111111111111111111111111111",
+      "chain_id": 8453,
+      "midnight": "0xadedd8ab6de832766fedf0fac4992e5c4d3ea18a",
+      "loan_token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "collaterals": [
+        { "token": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf", "lltv": "860000000000000000" }
+      ],
+      "maturity": 1790341200,
+      "asks": [],
+      "bids": [
+        { "tick": 4428, "price": "994865000000000000", "units": "251290377", "assets": "250000000", "count": 1 }
+      ]
+    },
+    {
+      "market_id": "0x05959752fdeff325962b9d263edb421efc6e2186a49360dba6c32e86ebf6c84c",
+      "chain_id": 8453,
+      "midnight": "0xadedd8ab6de832766fedf0fac4992e5c4d3ea18a",
+      "loan_token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "collaterals": [
+        { "token": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf", "lltv": "860000000000000000" }
+      ],
+      "maturity": 1787929200,
+      "asks": [
+        { "tick": 4484, "price": "996112700000000000", "units": "100791807995", "assets": "100400000000", "count": 2 },
+        { "tick": 4472, "price": "995873900000000000", "units": "300579602", "assets": "299339381", "count": 1 }
+      ],
+      "bids": [
+        { "tick": 4452, "price": "995443000000000000", "units": "320214010", "assets": "318754794", "count": 1 }
+      ]
+    },
+    {
+      "market_id": "0x2222222222222222222222222222222222222222222222222222222222222222",
+      "chain_id": 8453,
+      "midnight": "0xadedd8ab6de832766fedf0fac4992e5c4d3ea18a",
+      "loan_token": "0x4200000000000000000000000000000000000006",
+      "collaterals": [
+        { "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", "lltv": "860000000000000000" }
+      ],
+      "maturity": 1787929200,
+      "asks": [],
+      "bids": []
+    }
+  ]
+}

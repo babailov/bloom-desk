@@ -3,7 +3,7 @@ declare module "*.xls?inline" {
   const dataUri: string;
   export default dataUri;
 }
-declare module "*.xml?raw" {
+declare module "*?raw" {
   const content: string;
   export default content;
 }

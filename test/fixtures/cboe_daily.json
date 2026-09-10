@@ -1,0 +1,8 @@
+{
+  "ratios": [
+    {"name": "TOTAL PUT/CALL RATIO", "value": "0.72"},
+    {"name": "INDEX PUT/CALL RATIO", "value": "0.85"},
+    {"name": "EXCHANGE TRADED PRODUCTS PUT/CALL RATIO", "value": "0.89"},
+    {"name": "EQUITY PUT/CALL RATIO", "value": "0.51"}
+  ]
+}

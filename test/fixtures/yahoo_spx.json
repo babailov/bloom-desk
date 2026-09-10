@@ -1,0 +1,5 @@
+{"chart": {"result": [{
+  "meta": {"symbol": "^GSPC", "regularMarketPrice": 6240.10, "regularMarketTime": 1783947600},
+  "timestamp": [1783728000, 1783814400, 1783900800],
+  "indicators": {"quote": [{"close": [6205.30, null, 6234.50]}]}
+}], "error": null}}
