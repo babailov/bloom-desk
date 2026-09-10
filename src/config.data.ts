@@ -763,24 +763,24 @@ export const config: Config = {
       {
         "id": 8453,
         "name": "Base",
-        "usdc": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+        "usdc": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
       },
       {
         "id": 1,
         "name": "Ethereum",
-        "usdc": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        "usdc": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
       },
       {
         "id": 42161,
         "name": "Arbitrum",
-        "usdc": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+        "usdc": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
       }
     ],
     "midnight_chains": [
       8453
     ],
     "token_symbols": {
-      "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf": "cbBTC",
+      "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf": "cbBTC",
       "0x4200000000000000000000000000000000000006": "WETH"
     },
     "morpho_graphql": "https://blue-api.morpho.org/graphql",
@@ -791,37 +791,37 @@ export const config: Config = {
       {
         "chain": "BASE",
         "rpc": "https://base-rpc.publicnode.com",
-        "pool": "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5",
+        "pool": "0xa238dd80c259a72e81d7e4664a9801593f98d1c5",
         "symbol": "USDC",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+        "asset": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
       },
       {
         "chain": "ETH",
         "rpc": "https://ethereum-rpc.publicnode.com",
-        "pool": "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+        "pool": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
         "symbol": "USDC",
-        "asset": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        "asset": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
       },
       {
         "chain": "ETH",
         "rpc": "https://ethereum-rpc.publicnode.com",
-        "pool": "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+        "pool": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
         "symbol": "USDT",
-        "asset": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        "asset": "0xdac17f958d2ee523a2206206994597c13d831ec7"
       },
       {
         "chain": "ARB",
         "rpc": "https://arb1.arbitrum.io/rpc",
-        "pool": "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+        "pool": "0x794a61358d6845594f94dc1db02a252b5b4814ad",
         "symbol": "USDC",
-        "asset": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+        "asset": "0xaf88d065e77c8cc2239327c5edb3a432268e5831"
       },
       {
         "chain": "ARB",
         "rpc": "https://arb1.arbitrum.io/rpc",
-        "pool": "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+        "pool": "0x794a61358d6845594f94dc1db02a252b5b4814ad",
         "symbol": "USDT",
-        "asset": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"
+        "asset": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9"
       }
     ],
     "llama_chart": [

@@ -63,7 +63,9 @@ def test_refs_config():
         ("BASE", "USDC"), ("ETH", "USDC"), ("ETH", "USDT"), ("ARB", "USDC"), ("ARB", "USDT"),
     ]  # Base USDT deliberately absent: not listed on Aave v3 Base
     base = aave[0]
-    assert base.rpc == "https://mainnet.base.org"
+    # publicnode, not mainnet.base.org: the latter 429s Cloudflare egress
+    # (verified 2026-09-10), and the ETH markets below already use publicnode.
+    assert base.rpc == "https://base-rpc.publicnode.com"
     # addresses are normalized to lowercase at load so fetchers compare directly
     assert base.pool == "0xa238dd80c259a72e81d7e4664a9801593f98d1c5"
     assert base.asset == "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"

@@ -1,0 +1,625 @@
+{
+  "as_of": "2026-07-08T14:30:00.000Z",
+  "panels": {
+    "bonds": {
+      "rows": [
+        {
+          "cb_label": null,
+          "cb_pct": null,
+          "chg_1d_bp": null,
+          "chg_1w_bp": null,
+          "country": "DE",
+          "updated_at": "2026-07-08T14:00:00.000000Z",
+          "y10_pct": 3.17,
+          "y3m_pct": null
+        },
+        {
+          "cb_label": "FED",
+          "cb_pct": 3.75,
+          "chg_1d_bp": -3,
+          "chg_1w_bp": -8,
+          "country": "US",
+          "updated_at": "2026-07-08T14:00:00.000000Z",
+          "y10_pct": 4.12,
+          "y3m_pct": 3.89
+        }
+      ],
+      "source": "bundesbank+fred",
+      "updated_at": "2026-07-08T14:00:00.000000Z"
+    },
+    "cycle": {
+      "source": "cycle",
+      "tabs": [
+        {
+          "id": "risk",
+          "label": "RISK",
+          "panels": [
+            {
+              "rows": [
+                {
+                  "chg_1m": -4.2,
+                  "chg_1y": -10.5,
+                  "id": "vix",
+                  "name": "VIX",
+                  "overlay": "t10y2y",
+                  "unit": "idx",
+                  "value": 21
+                },
+                {
+                  "chg_1m": -4.4,
+                  "chg_1y": -11,
+                  "id": "vxn",
+                  "name": "VXN (Nasdaq vol)",
+                  "overlay": null,
+                  "unit": "idx",
+                  "value": 22
+                },
+                {
+                  "chg_1m": -4.6,
+                  "chg_1y": -11.5,
+                  "id": "pc-total",
+                  "name": "Put/Call total",
+                  "overlay": null,
+                  "unit": "ratio",
+                  "value": 23
+                },
+                {
+                  "chg_1m": null,
+                  "chg_1y": null,
+                  "id": "pc-equity",
+                  "name": "Put/Call equity",
+                  "overlay": null,
+                  "unit": "ratio",
+                  "value": null
+                }
+              ],
+              "title": "VOLATILITY & HEDGING"
+            },
+            {
+              "rows": [
+                {
+                  "chg_1m": -5,
+                  "chg_1y": -12.5,
+                  "id": "aaii-spread",
+                  "name": "AAII bull-bear spread",
+                  "overlay": null,
+                  "unit": "pts",
+                  "value": 25
+                },
+                {
+                  "chg_1m": -5.2,
+                  "chg_1y": -13,
+                  "id": "cyc-def",
+                  "name": "Cyclicals vs defensives",
+                  "overlay": null,
+                  "unit": "ratio",
+                  "value": 26
+                },
+                {
+                  "chg_1m": -5.4,
+                  "chg_1y": -13.5,
+                  "id": "dax-smi",
+                  "name": "DAX vs SMI",
+                  "overlay": null,
+                  "unit": "ratio",
+                  "value": 27
+                },
+                {
+                  "chg_1m": -5.6,
+                  "chg_1y": -14,
+                  "id": "small-large",
+                  "name": "Small vs large (IWM/SPY)",
+                  "overlay": null,
+                  "unit": "ratio",
+                  "value": 28
+                },
+                {
+                  "chg_1m": null,
+                  "chg_1y": null,
+                  "id": "gold-silver",
+                  "name": "Gold vs silver",
+                  "overlay": null,
+                  "unit": "ratio",
+                  "value": null
+                },
+                {
+                  "chg_1m": -6,
+                  "chg_1y": -15,
+                  "id": "spw-spx",
+                  "name": "Equal-weight vs SPX",
+                  "overlay": null,
+                  "unit": "ratio",
+                  "value": 30
+                }
+              ],
+              "title": "SENTIMENT & ROTATION"
+            }
+          ]
+        },
+        {
+          "id": "econ",
+          "label": "ECON",
+          "panels": [
+            {
+              "rows": [
+                {
+                  "chg_1m": -6.2,
+                  "chg_1y": -15.5,
+                  "id": "ism-pmi",
+                  "name": "ISM Manufacturing PMI",
+                  "overlay": "t10y2y",
+                  "unit": "idx",
+                  "value": 31
+                },
+                {
+                  "chg_1m": -6.4,
+                  "chg_1y": -16,
+                  "id": "ism-svc",
+                  "name": "ISM Services PMI",
+                  "overlay": null,
+                  "unit": "idx",
+                  "value": 32
+                },
+                {
+                  "chg_1m": -6.6,
+                  "chg_1y": -16.5,
+                  "id": "oecd-cli-us",
+                  "name": "OECD CLI US",
+                  "overlay": null,
+                  "unit": "idx",
+                  "value": 33
+                },
+                {
+                  "chg_1m": null,
+                  "chg_1y": null,
+                  "id": "oecd-cli-ea",
+                  "name": "OECD CLI Europe (G4E)",
+                  "overlay": null,
+                  "unit": "idx",
+                  "value": null
+                },
+                {
+                  "chg_1m": -7.6,
+                  "chg_1y": -19,
+                  "id": "umich",
+                  "name": "UMich consumer sentiment",
+                  "overlay": null,
+                  "unit": "idx",
+                  "value": 38
+                }
+              ],
+              "title": "SURVEYS & LEADING"
+            },
+            {
+              "rows": [
+                {
+                  "chg_1m": -7,
+                  "chg_1y": -17.5,
+                  "id": "claims",
+                  "name": "Initial jobless claims",
+                  "overlay": null,
+                  "unit": "k",
+                  "value": 35
+                },
+                {
+                  "chg_1m": -7.2,
+                  "chg_1y": -18,
+                  "id": "jolts",
+                  "name": "Job openings (JOLTS)",
+                  "overlay": null,
+                  "unit": "k",
+                  "value": 36
+                },
+                {
+                  "chg_1m": -7.4,
+                  "chg_1y": -18.5,
+                  "id": "trucks",
+                  "name": "Heavy truck sales",
+                  "overlay": null,
+                  "unit": "m",
+                  "value": 37
+                },
+                {
+                  "chg_1m": null,
+                  "chg_1y": null,
+                  "id": "m2-yoy",
+                  "name": "M2 YoY",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": null
+                },
+                {
+                  "chg_1m": -8,
+                  "chg_1y": -20,
+                  "id": "m2-velocity",
+                  "name": "M2 velocity",
+                  "overlay": null,
+                  "unit": "ratio",
+                  "value": 40
+                },
+                {
+                  "chg_1m": null,
+                  "chg_1y": null,
+                  "id": "usd-broad",
+                  "name": "USD broad index",
+                  "overlay": null,
+                  "unit": "idx",
+                  "value": null
+                }
+              ],
+              "title": "ACTIVITY & MONEY"
+            },
+            {
+              "rows": [
+                {
+                  "chg_1m": -8.2,
+                  "chg_1y": -20.5,
+                  "id": "breakeven-10y",
+                  "name": "10Y breakeven",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": 41
+                },
+                {
+                  "chg_1m": -8.4,
+                  "chg_1y": -21,
+                  "id": "infl-5y5y",
+                  "name": "5y5y fwd inflation",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": 42
+                },
+                {
+                  "chg_1m": -8.6,
+                  "chg_1y": -21.5,
+                  "id": "real-10y",
+                  "name": "10Y real rate (TIPS)",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": 43
+                }
+              ],
+              "title": "INFLATION & RATES"
+            }
+          ]
+        },
+        {
+          "id": "credit",
+          "label": "CREDIT",
+          "panels": [
+            {
+              "rows": [
+                {
+                  "chg_1m": -9,
+                  "chg_1y": -22.5,
+                  "id": "t10y3m",
+                  "name": "US 10Y-3M curve",
+                  "overlay": "vix",
+                  "unit": "%",
+                  "value": 45
+                },
+                {
+                  "chg_1m": -9.2,
+                  "chg_1y": -23,
+                  "id": "t10y2y",
+                  "name": "US 10Y-2Y curve",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": 46
+                }
+              ],
+              "title": "CURVE"
+            },
+            {
+              "rows": [
+                {
+                  "chg_1m": -9.4,
+                  "chg_1y": -23.5,
+                  "id": "ig-oas",
+                  "name": "US IG OAS",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": 47
+                },
+                {
+                  "chg_1m": -9.6,
+                  "chg_1y": -24,
+                  "id": "hy-oas",
+                  "name": "US HY OAS",
+                  "overlay": "ism-pmi",
+                  "unit": "%",
+                  "value": 48
+                },
+                {
+                  "chg_1m": null,
+                  "chg_1y": null,
+                  "id": "eu-hy-oas",
+                  "name": "Euro HY OAS",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": null
+                },
+                {
+                  "chg_1m": -10,
+                  "chg_1y": -25,
+                  "id": "bbb-oas",
+                  "name": "US BBB OAS",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": 50
+                },
+                {
+                  "chg_1m": -10.2,
+                  "chg_1y": -25.5,
+                  "id": "ccc-oas",
+                  "name": "US CCC OAS",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": 51
+                },
+                {
+                  "chg_1m": -10.4,
+                  "chg_1y": -26,
+                  "id": "nfci",
+                  "name": "Chicago Fed NFCI",
+                  "overlay": null,
+                  "unit": "idx",
+                  "value": 52
+                },
+                {
+                  "chg_1m": -0.17,
+                  "chg_1y": 0.71,
+                  "id": "bank-lending",
+                  "name": "Bank loans & leases YoY",
+                  "overlay": null,
+                  "unit": "%",
+                  "value": 5.71
+                }
+              ],
+              "title": "SPREADS & CONDITIONS"
+            }
+          ]
+        },
+        {
+          "id": "profit",
+          "label": "PROFIT",
+          "panels": [
+            {
+              "rows": [
+                {
+                  "chg_1m": null,
+                  "chg_1y": null,
+                  "id": "corp-profits",
+                  "name": "Corporate profits YoY",
+                  "overlay": "ism-pmi",
+                  "unit": "%",
+                  "value": null
+                }
+              ],
+              "title": "PROFIT CYCLE"
+            }
+          ]
+        },
+        {
+          "id": "pos",
+          "label": "POS",
+          "panels": [
+            {
+              "rows": [
+                {
+                  "chg_1m": -11,
+                  "chg_1y": -27.5,
+                  "id": "cot-vix",
+                  "name": "VIX net non-commercial",
+                  "overlay": "vix",
+                  "unit": "contracts",
+                  "value": 55
+                },
+                {
+                  "chg_1m": -11.2,
+                  "chg_1y": -28,
+                  "id": "cot-crude",
+                  "name": "Crude net non-commercial",
+                  "overlay": null,
+                  "unit": "contracts",
+                  "value": 56
+                },
+                {
+                  "chg_1m": -11.4,
+                  "chg_1y": -28.5,
+                  "id": "cot-usd",
+                  "name": "USD idx net non-commercial",
+                  "overlay": "usd-broad",
+                  "unit": "contracts",
+                  "value": 57
+                },
+                {
+                  "chg_1m": -11.6,
+                  "chg_1y": -29,
+                  "id": "cot-gbp",
+                  "name": "GBP net non-commercial",
+                  "overlay": null,
+                  "unit": "contracts",
+                  "value": 58
+                }
+              ],
+              "title": "CFTC NET NON-COMMERCIAL"
+            }
+          ]
+        }
+      ],
+      "updated_at": null
+    },
+    "defi": {
+      "rows": [
+        {
+          "apy": 7.98,
+          "apy_30d": 7.03,
+          "apy_7d": 6.54,
+          "chain": "Base",
+          "chain_id": 8453,
+          "pool": "Clearstar",
+          "pool_address": "0x91c0",
+          "protocol": "Morpho",
+          "tier": "Conservative",
+          "tvl_usd": 10732971.3,
+          "url": "https://app.morpho.org/x"
+        }
+      ],
+      "source": "zyfai",
+      "updated_at": "2026-07-08T14:00:00.000000Z"
+    },
+    "equity": {
+      "rows": [
+        {
+          "chg_1d": 0.56,
+          "chg_1w": 1.37,
+          "chg_1y": null,
+          "chg_ytd": 7.49,
+          "delayed": true,
+          "last": 6234.5,
+          "name": "S&P 500",
+          "source": "yahoo",
+          "symbol": "SPX",
+          "updated_at": "2026-07-08T14:00:00.000000Z"
+        },
+        {
+          "chg_1d": 0.68,
+          "chg_1w": null,
+          "chg_1y": null,
+          "chg_ytd": null,
+          "delayed": true,
+          "last": 22150.25,
+          "name": "Nasdaq 100",
+          "source": "yahoo",
+          "symbol": "NDX",
+          "updated_at": "2026-07-08T14:00:00.000000Z"
+        }
+      ],
+      "updated_at": "2026-07-08T14:00:00.000000Z"
+    },
+    "macro": {
+      "past": [
+        {
+          "actual": "185k",
+          "country": "USD",
+          "impact": "High",
+          "name": "Non-Farm Payrolls",
+          "series_id": "us-nfp",
+          "time": "2026-07-03T08:30:00-04:00"
+        },
+        {
+          "actual": "0.4%",
+          "country": "USD",
+          "impact": "High",
+          "name": "Retail Sales m/m",
+          "series_id": "us-retail",
+          "time": "2026-07-08T08:30:00-04:00"
+        }
+      ],
+      "releases": [
+        {
+          "actual": null,
+          "consensus": "2.3%",
+          "country": "USD",
+          "impact": "High",
+          "name": "CPI y/y",
+          "previous": "2.4%",
+          "series_id": "us-cpi-yoy",
+          "time": "2026-07-10T12:30:00-04:00"
+        },
+        {
+          "actual": null,
+          "consensus": null,
+          "country": "EUR",
+          "impact": "High",
+          "name": "TBD Event",
+          "previous": null,
+          "series_id": null,
+          "time": "TBD"
+        }
+      ],
+      "source": "forexfactory",
+      "updated_at": "2026-07-08T14:00:00.000000Z"
+    },
+    "midnight": {
+      "rows": [
+        {
+          "ask_depth_usd": 100699.339381,
+          "bid_depth_usd": 318.754794,
+          "borrow_apy": 4.53047561440989,
+          "chain": "Base",
+          "collateral": "cbBTC",
+          "days": 37.625,
+          "lend_apy": 4.0925361830999485,
+          "market_id": "0x0595",
+          "maturity": "2026-08-28"
+        }
+      ],
+      "source": "morpho",
+      "updated_at": "2026-07-08T14:00:00.000000Z"
+    },
+    "morpho": {
+      "rows": [
+        {
+          "borrow_apy": 5.43,
+          "chain": "Base",
+          "chain_id": 8453,
+          "collateral": "cbBTC",
+          "lltv_pct": 86,
+          "market_id": "0x9103",
+          "supply_apy": 4.89,
+          "tvl_usd": 1413119205.7988927,
+          "utilization_pct": 90.41
+        }
+      ],
+      "source": "morpho-blue",
+      "updated_at": "2026-07-08T14:00:00.000000Z"
+    },
+    "news": {
+      "items": [
+        {
+          "feed": "FT",
+          "headline": "ECB signals pause",
+          "published_at": "2026-07-08T13:00:00Z",
+          "source": "rss",
+          "url": "https://ft.com/a"
+        }
+      ],
+      "source": "rss",
+      "updated_at": "2026-07-08T14:00:00.000000Z"
+    },
+    "refs": {
+      "rows": [
+        {
+          "chg_1d_bp": 2,
+          "chg_1w_bp": 11,
+          "extra": null,
+          "id": "aave-base-usdc-supply",
+          "label": "AAVE USDC BASE SUP",
+          "value_pct": 2.71
+        },
+        {
+          "chg_1d_bp": null,
+          "chg_1w_bp": null,
+          "extra": null,
+          "id": "aave-base-usdc-borrow",
+          "label": "AAVE USDC BASE BOR",
+          "value_pct": 3.88
+        },
+        {
+          "chg_1d_bp": null,
+          "chg_1w_bp": null,
+          "extra": {
+            "expiry": "2026-09-17T00:00:00.000Z"
+          },
+          "id": "pendle-pt-cbbtc-usdc",
+          "label": "PENDLE PT SEP17",
+          "value_pct": 4.475867335355943
+        }
+      ],
+      "source": "refs",
+      "updated_at": "2026-07-08T14:00:00.000000Z"
+    }
+  }
+}

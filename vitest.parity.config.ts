@@ -1,20 +1,21 @@
+/**
+ * Config for the parity dumper only. The main config excludes parity/ so the
+ * dumper stays out of `pnpm test`; this one includes just that file.
+ *
+ * disableConsoleIntercept is what makes this work: without it vitest swallows
+ * workerd's console output entirely, and workerd has no filesystem to write to
+ * instead. The dumper prints the payload in chunks and run.sh reassembles it.
+ */
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 import { cloudflareTest, readD1Migrations } from "@cloudflare/vitest-pool-workers";
 
-// ESM: no __dirname. Derive the directory from import.meta.url instead.
 const here = path.dirname(fileURLToPath(import.meta.url));
-
-// Tests run against a real D1 in the Workers runtime, not a mock, so the
-// migrations are applied exactly the way production applies them.
 const migrations = await readD1Migrations(path.join(here, "migrations"));
 
 export default defineConfig({
-  // The AAII fixture is a binary .xls. Declaring it an asset lets tests
-  // import it with ?inline as a data URI, since workerd has no fs.
   assetsInclude: ["**/*.xls"],
-  // seed.sql is imported with ?raw by the parity dumper.
   plugins: [
     cloudflareTest({
       wrangler: { configPath: "./wrangler.jsonc" },
@@ -22,9 +23,8 @@ export default defineConfig({
     }),
   ],
   test: {
-    // parity/ holds the dumper the parity diff drives; it is not part of the
-    // offline suite and is run explicitly by parity/run.sh.
-    exclude: ["parity/**", "node_modules/**", "collector/**"],
+    include: ["parity/dump.test.ts"],
     setupFiles: ["./test/apply-migrations.ts"],
+    disableConsoleIntercept: true,
   },
 });
