@@ -20,6 +20,7 @@
 import * as XLSX from "xlsx";
 
 import { USER_AGENT, type GetBytes } from "../http";
+import { round2 } from "../num";
 import type { Point } from "../store";
 
 export const URL = "https://www.aaii.com/files/surveys/sentiment.xls";
@@ -40,17 +41,6 @@ function isoFromExcelDate(d: Date): string {
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
-}
-
-/**
- * Round to 2dp, half away from zero.
- *
- * Python's round() is half-to-even, so an exact .005 could differ. Float noise
- * in bull-bear makes exact halves vanishingly rare, and the parity diff against
- * the Python collector would surface it.
- */
-function round2(x: number): number {
-  return (Math.sign(x) * Math.round(Math.abs(x) * 100)) / 100;
 }
 
 export function parseSentiment(content: ArrayBuffer): Point[] {
