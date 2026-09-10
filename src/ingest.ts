@@ -136,5 +136,16 @@ export function createIngest() {
     return c.json({ ok: true, releases: doc?.payload.releases?.length ?? 0 });
   });
 
+  /**
+   * Everything else under the prefix stops here.
+   *
+   * The gate hands this prefix over on the bearer token alone, so without this
+   * an unmatched path -- a GET, a typo, a route that has not been written yet --
+   * would carry that authorization past the API and into the static asset
+   * handler. The token buys these routes and no others; say so in one place
+   * rather than relying on what happens to be registered after it.
+   */
+  app.all("/api/ingest/*", (c) => c.json({ detail: "no such ingest route" }, 404));
+
   return app;
 }
