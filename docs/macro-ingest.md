@@ -43,7 +43,8 @@ which is when that alarm is worth having.
 
 ## Setting it up
 
-The route refuses everyone until the secret exists on both ends.
+The route refuses everyone until the secret exists on both ends, and it is
+unreachable until Cloudflare Access lets it through.
 
 1. Generate a token:
 
@@ -66,7 +67,29 @@ The route refuses everyone until the secret exists on both ends.
      --body "https://<your-host>/api/ingest/macro"
    ```
 
-4. Run it once by hand to check the wiring, rather than waiting for the
+4. Let the path through Access, if Access covers it. Check first:
+
+   ```bash
+   curl -s -o /dev/null -w '%{http_code}\n' https://<your-host>/api/ingest/macro
+   ```
+
+   `403` is the Worker refusing a request with no token: the path is reachable
+   and there is nothing to do. `302` is Access sending the request to its login
+   page, because the Access application covers the whole hostname. In that case
+   add a second self-hosted Access application:
+
+   | Field | Value |
+   | --- | --- |
+   | Domain | `<your-host>` |
+   | Path | `api/ingest` |
+   | Policy | action **Bypass**, include **Everyone** |
+
+   The more specific path wins, so only this prefix leaves the edge; every other
+   path stays behind the existing application. The bearer check in
+   `src/ingest.ts` is then the only thing guarding the prefix, which is what it
+   is written to be. Repeat the `curl` and expect `403`.
+
+5. Run it once by hand to check the wiring, rather than waiting for the
    schedule:
 
    ```bash
@@ -76,9 +99,20 @@ The route refuses everyone until the secret exists on both ends.
    A healthy run prints the event count it fetched and the release count the
    Worker stored.
 
-**Scheduled workflows only run from the default branch.** Until this file's
-workflow is on `main`, the schedule never fires and `workflow_dispatch` is the
-only way to trigger it.
+**GitHub only knows about workflows on the default branch.** Until this file is
+on `main`, the schedule never fires and `gh workflow run` cannot find it either —
+`workflow_dispatch` needs the file on the default branch too. Until then, post
+from any host that is not a Cloudflare Worker, exactly as the workflow does:
+
+```bash
+curl -sS -A "bloom-desk/0.1 (+https://github.com/babailov/bloom-desk)" \
+  -o calendar.json https://nfs.faireconomy.media/ff_calendar_thisweek.json
+curl -sS -X POST -H "Authorization: Bearer $MACRO_INGEST_TOKEN" \
+  -H "Content-Type: application/json" --data-binary @calendar.json \
+  https://<your-host>/api/ingest/macro
+```
+
+`{"ok":true,"releases":N}` means the panel is current as of that request.
 
 ## Checking it
 
@@ -92,4 +126,8 @@ whichever transport last moved it.
 
 An empty calendar panel with `last_success: null` and a 429 in `last_error` is
 this problem returning: the push job has stopped and the fallback is telling you
-so.
+so. A push that fails with a 302 in its log is step 4: Access is covering the
+path again.
+
+The **Act** column stays `—`. The `thisweek` feed carries `forecast` and
+`previous` but no `actual` field at all, whichever transport delivers it.
