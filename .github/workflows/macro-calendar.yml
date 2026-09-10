@@ -1,0 +1,77 @@
+# Retrieve the ForexFactory calendar and post it to the Worker.
+#
+# The Worker cannot fetch this feed itself: ForexFactory rate-limits per client
+# IP and Cloudflare's shared Workers egress address is permanently over that
+# quota, so the same request that returns 200 from an ordinary host returns 429
+# from a Worker, in every colo (issue #2). A GitHub runner has an ordinary host's
+# IP, which is the entire reason this job exists. It does nothing else: the
+# parsing, filtering and storage all still happen in the Worker.
+#
+# Cadence is every 30 minutes. The Worker keeps 'macro' on its hourly cron as a
+# fallback, and that fallback only reaches for the network when the stored
+# calendar is older than 55 minutes on a release day -- so while this job is
+# healthy the fallback stays quiet, and when this job stops the fallback starts
+# stamping the 429 into fetcher_status, which is exactly when that alarm is
+# worth having.
+name: macro calendar
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+# Two runs posting the same week's calendar at once is harmless -- the write is
+# an upsert keyed (country, name, time) -- but there is no reason to pay for it.
+concurrency:
+  group: macro-calendar
+  cancel-in-progress: false
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch the calendar
+        env:
+          # Same honest, contactable User-Agent the Worker sends. See src/http.ts.
+          UA: "bloom-desk/0.1 (+https://github.com/babailov/bloom-desk)"
+        run: |
+          set -euo pipefail
+          code=$(curl -sS --max-time 30 --retry 3 --retry-delay 10 --retry-all-errors \
+            -A "$UA" \
+            -o calendar.json -w '%{http_code}' \
+            https://nfs.faireconomy.media/ff_calendar_thisweek.json)
+          if [ "$code" != "200" ]; then
+            echo "ForexFactory returned HTTP $code" >&2
+            head -c 400 calendar.json >&2 || true
+            exit 1
+          fi
+          # A rate-limit page is HTML and would parse as zero releases nowhere.
+          # Refuse it here so the run goes red rather than posting a blank week.
+          jq -e 'type == "array" and length > 0' calendar.json > /dev/null
+          echo "fetched $(jq 'length' calendar.json) events"
+
+      - name: Post it to the desk
+        env:
+          INGEST_URL: ${{ vars.INGEST_URL }}
+          INGEST_TOKEN: ${{ secrets.MACRO_INGEST_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${INGEST_URL:-}" ] || [ -z "${INGEST_TOKEN:-}" ]; then
+            echo "INGEST_URL variable or MACRO_INGEST_TOKEN secret is not set" >&2
+            exit 1
+          fi
+          code=$(curl -sS --max-time 30 -X POST \
+            -H "Authorization: Bearer $INGEST_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data-binary @calendar.json \
+            -o response.json -w '%{http_code}' \
+            "$INGEST_URL")
+          # The body names the release count, which is the one number worth
+          # seeing in a run log. It carries no secret.
+          cat response.json
+          echo
+          if [ "$code" != "200" ]; then
+            echo "ingest returned HTTP $code" >&2
+            exit 1
+          fi

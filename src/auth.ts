@@ -11,6 +11,12 @@
  * relied on the edge -- but it used to be the second of two layers and is now
  * the only one. See gate.ts for why, and for how to undo it.
  *
+ * Two prefixes are decided elsewhere. `ui/gate/` is public so the sign-in page
+ * can load its artwork while signed out (gate.ts), and `/api/ingest/` carries a
+ * bearer token instead of a JWT because the machine that posts to it cannot get
+ * a JWT (ingest.ts). Both are exact prefix tests, both are named in one place,
+ * and both fail closed.
+ *
  * **Fails closed.** With no team domain or audience configured there is no way
  * to verify anything, so every request is refused. That is deliberate: the
  * failure mode of a misconfigured gate must be "nobody gets in", never
@@ -21,6 +27,7 @@ import { createRemoteJWKSet, jwtVerify, type JWTPayload } from "jose";
 import type { Context, Next } from "hono";
 
 import { gateHtml, isPublicPath, type GateReason } from "./gate";
+import { ingestAuthorized, isIngestPath } from "./ingest";
 
 /** Access puts the token in this header, and in this cookie for browsers. */
 const JWT_HEADER = "Cf-Access-Jwt-Assertion";
@@ -154,6 +161,16 @@ export function requireAccess() {
     // still refuse everything, artwork included.
     const path = new URL(c.req.url).pathname;
     if (isPublicPath(path)) return await next();
+
+    // The push path proves itself with a bearer token, not an Access JWT, and
+    // it gets no second chance at the JWT: a caller reaching for /api/ingest/
+    // without the secret is refused here rather than falling through to a gate
+    // that would hand a signed-in browser the machine endpoint.
+    if (isIngestPath(path)) {
+      if (ingestAuthorized(c.req.raw, c.env)) return await next();
+      console.warn(`ingest credential rejected for ${path}`);
+      return c.json({ detail: "invalid ingest credential" }, 403);
+    }
 
     const token = tokenFrom(c.req.raw);
     if (token === null) return refuse(c, path, cfg, "signed-out", 401, "missing Access token");

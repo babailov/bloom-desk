@@ -9,6 +9,13 @@
  * panel's past-7-days section is fed by 'macro_history': every real fetch
  * upserts its releases keyed (country, name, time), so re-fetches refresh
  * actuals and revisions. Retained 30 days.
+ *
+ * Transport note (issue #2): ForexFactory rate-limits per client IP and
+ * Cloudflare's shared Workers egress address is permanently over that quota, so
+ * fetching from inside the Worker returns 429 every time. The body normally
+ * arrives by push instead -- see src/ingest.ts -- which is why the parse and
+ * the fetch are separate functions. Everything below the transport is shared by
+ * both paths, so the panel is built by the same code either way.
  */
 import type { CalendarMapEntry } from "../config";
 import type { GetText } from "../http";
@@ -83,14 +90,15 @@ interface RawEvent {
   actual?: string;
 }
 
-export async function fetchCalendar(
-  url: string,
-  calMap: readonly CalendarMapEntry[],
-  store: Store,
-  getText: GetText,
-  now: Date = new Date(),
-): Promise<string> {
-  const events = JSON.parse(await getText(url)) as RawEvent[];
+/**
+ * Parse a raw ForexFactory calendar body into the releases we keep.
+ *
+ * Throws on a body that is not JSON, which is the useful failure: a rate-limit
+ * page or an outage notice is HTML, and silently reading it as zero releases
+ * would blank the panel and call it a success.
+ */
+export function parseCalendar(body: string, calMap: readonly CalendarMapEntry[]): Release[] {
+  const events = JSON.parse(body) as RawEvent[];
   const releases: Release[] = [];
 
   for (const ev of events) {
@@ -111,6 +119,23 @@ export async function fetchCalendar(
     });
   }
 
+  return releases;
+}
+
+/**
+ * Write both docs from an already-retrieved body. Returns the source label.
+ *
+ * This is the whole fetcher minus the transport, so the push path in
+ * src/ingest.ts and the cron fallback below produce byte-identical docs.
+ */
+export async function ingestCalendar(
+  body: string,
+  calMap: readonly CalendarMapEntry[],
+  store: Store,
+  now: Date = new Date(),
+): Promise<string> {
+  const releases = parseCalendar(body, calMap);
+
   await store.putDoc("macro_calendar", { releases }, "forexfactory");
 
   const hist = await store.doc<{ releases?: Release[] }>("macro_history");
@@ -121,6 +146,16 @@ export async function fetchCalendar(
     "forexfactory",
   );
   return "forexfactory";
+}
+
+export async function fetchCalendar(
+  url: string,
+  calMap: readonly CalendarMapEntry[],
+  store: Store,
+  getText: GetText,
+  now: Date = new Date(),
+): Promise<string> {
+  return ingestCalendar(await getText(url), calMap, store, now);
 }
 
 /**

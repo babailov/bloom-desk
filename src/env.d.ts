@@ -10,6 +10,8 @@ declare global {
     ACCESS_AUD?: string;
     /** Optional comma-separated email allow list, checked after Access. */
     ACCESS_ALLOWED_EMAILS?: string;
+    /** Bearer token for POST /api/ingest/*. Unset means the route refuses all. */
+    MACRO_INGEST_TOKEN?: string;
   }
   namespace Cloudflare {
     interface Env {
@@ -17,6 +19,7 @@ declare global {
       ACCESS_TEAM_DOMAIN?: string;
       ACCESS_AUD?: string;
       ACCESS_ALLOWED_EMAILS?: string;
+      MACRO_INGEST_TOKEN?: string;
     }
   }
 }
