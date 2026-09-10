@@ -2,6 +2,7 @@ import { env } from "cloudflare:test";
 import { beforeAll, describe, expect, it } from "vitest";
 import { SignJWT, exportJWK, generateKeyPair, type JWK } from "jose";
 
+import WRANGLER_JSONC from "../wrangler.jsonc?raw";
 import worker from "../src/index";
 import { readAccessConfig, verifyAccessJwt } from "../src/auth";
 
@@ -82,6 +83,27 @@ describe("fails closed", () => {
 
   it("refuses a malformed token", async () => {
     expect((await call("/api/dashboard", { "Cf-Access-Jwt-Assertion": "not.a.jwt" })).status).toBe(403);
+  });
+});
+
+describe("static assets cannot outrun the gate", () => {
+  // Static assets are matched before the Worker unless run_worker_first is set,
+  // so / and /index.html were served unauthenticated in production while
+  // /api/* was correctly refused. Found by curling the deployment.
+  //
+  // This asserts the config, not the behaviour, and that is a deliberate
+  // limit: an earlier version of this test drove SELF.fetch and passed just as
+  // happily with run_worker_first turned off, because miniflare does not
+  // emulate asset-first routing. A test that cannot fail is worse than no test,
+  // so what is checked here is the one thing that can regress in this repo --
+  // the setting itself. The routing semantics are verified by curling the
+  // deployment after every config change.
+  it("keeps run_worker_first on, so the Worker sees every request", () => {
+    const cfg = JSON.parse(
+      WRANGLER_JSONC.replace(/^\s*\/\/.*$/gm, ""), // strip line comments
+    ) as { assets?: { run_worker_first?: boolean } };
+
+    expect(cfg.assets?.run_worker_first).toBe(true);
   });
 });
 

@@ -13,7 +13,13 @@
   "workers_dev": false,
   "assets": {
     "directory": "./ui",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Without this, the asset server answers before the Worker ever runs and
+    // the Access gate never sees the request: / and /index.html were served
+    // unauthenticated while /api/* was correctly refused. Scoping it to a route
+    // list would save a few billable invocations on css/js, which is not worth
+    // the second way to get this wrong for a single-user tool.
+    "run_worker_first": true
   },
   "triggers": {
     // One expression per cadence in config.yaml. Cloudflare dispatches an
