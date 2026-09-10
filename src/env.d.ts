@@ -4,10 +4,19 @@
 declare global {
   interface Env {
     FRED_API_KEY: string;
+    /** Access team domain, e.g. "myteam.cloudflareaccess.com". */
+    ACCESS_TEAM_DOMAIN?: string;
+    /** Access application audience tag. */
+    ACCESS_AUD?: string;
+    /** Optional comma-separated email allow list, checked after Access. */
+    ACCESS_ALLOWED_EMAILS?: string;
   }
   namespace Cloudflare {
     interface Env {
       FRED_API_KEY: string;
+      ACCESS_TEAM_DOMAIN?: string;
+      ACCESS_AUD?: string;
+      ACCESS_ALLOWED_EMAILS?: string;
     }
   }
 }

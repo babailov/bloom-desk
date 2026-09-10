@@ -6,6 +6,11 @@
   // production run the same runtime semantics. Raise both together.
   "compatibility_date": "2026-08-22",
   "compatibility_flags": ["nodejs_compat"],
+  // The *.workers.dev route is off: it cannot sit behind Cloudflare Access,
+  // which needs a zone. The Worker is reachable only through the custom domain
+  // route below, which Access gates. Cron Triggers and Workflows are unaffected
+  // -- they do not go through a route.
+  "workers_dev": false,
   "assets": {
     "directory": "./ui",
     "binding": "ASSETS"
