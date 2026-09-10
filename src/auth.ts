@@ -13,9 +13,9 @@
  *
  * Two prefixes are decided elsewhere. `ui/gate/` is public so the sign-in page
  * can load its artwork while signed out (gate.ts), and `/api/ingest/` carries a
- * bearer token instead of a JWT because the machine that posts to it cannot get
- * a JWT (ingest.ts). Both are exact prefix tests, both are named in one place,
- * and both fail closed.
+ * bearer token instead of a JWT, so the machine that posts to it does not depend
+ * on how Access is configured (ingest.ts). Both are exact prefix tests, both are
+ * named in one place, and both fail closed.
  *
  * **Fails closed.** With no team domain or audience configured there is no way
  * to verify anything, so every request is refused. That is deliberate: the

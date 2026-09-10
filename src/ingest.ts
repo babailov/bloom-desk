@@ -12,13 +12,23 @@
  * ## Why a shared secret rather than Access
  *
  * Cloudflare Access would be the obvious credential, and a service token is
- * what it offers machines. But Access now covers exactly `/enter` at the edge
- * (see gate.ts), so it never sees a request to an API path and never exchanges
- * a service token for the JWT that auth.ts verifies. Putting Access back in
- * front of this route means a second Access application with its own audience
- * tag, and a gate that accepts either one -- more moving parts, and more ways
- * to misconfigure the thing that protects the data, than a single bearer token
- * checked in one place.
+ * what it offers machines. But whether Access can mint a JWT for this route
+ * depends on which paths the Access application covers, and that is dashboard
+ * state, not code. gate.ts is written for an application narrowed to `/enter`,
+ * where Access never sees an API path at all; the live application covers the
+ * whole hostname. A service token would work under one of those and not the
+ * other, and it would need auth.ts to accept a second kind of identity.
+ *
+ * A bearer token checked here works under both, and the edge only has to stay
+ * out of the way:
+ *
+ *   - Access narrowed to `/enter`: nothing to do, the prefix reaches the Worker.
+ *   - Access covering the hostname: add a second Access application for
+ *     `<host>/api/ingest` with a Bypass policy. The more specific path wins, so
+ *     only this prefix leaves the edge. Without it Access answers the POST with
+ *     a 302 to its login page and the Worker never sees it.
+ *
+ * Either way, this module is the only thing that authenticates the prefix.
  *
  * So: one secret, `MACRO_INGEST_TOKEN`, compared in constant time. It admits a
  * caller to this prefix and nothing else. It cannot read anything -- every
