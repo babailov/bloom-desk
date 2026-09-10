@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>FT</title>
+    <item>
+      <title>ECB signals pause on rate cuts</title>
+      <link>https://www.ft.com/content/abc123</link>
+      <pubDate>Wed, 08 Jul 2026 13:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Global equities rally on soft inflation print</title>
+      <link>https://www.ft.com/content/def456</link>
+      <pubDate>Wed, 08 Jul 2026 11:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

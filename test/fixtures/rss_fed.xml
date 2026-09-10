@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>FRB: Press Release - All Releases</title>
+        <link><![CDATA[https://www.federalreserve.gov/feeds/feeds.htm]]></link>
+        <description><![CDATA[All recent press releases from the Federal Reserve Board]]></description>
+        <language>en</language>
+        <item>
+            <title>Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.</title>
+            <link><![CDATA[https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260904a.htm]]></link>
+            <guid><![CDATA[https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260904a.htm]]></guid>
+            <description><![CDATA[Federal Reserve Board announces termination of enforcement actions with United Texas Bank, Quontic Bank Acquisition Corp., and Quontic Bank Holdings Corp.]]></description>
+            <category>Enforcement Actions</category>
+            <pubDate><![CDATA[Fri, 4 Sep 2026 15:00:00 GMT]]></pubDate>    
+        </item>
+<item>
+            <title>Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico</title>
+            <link><![CDATA[https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260827a.htm]]></link>
+            <guid><![CDATA[https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260827a.htm]]></guid>
+            <description><![CDATA[Federal Reserve Board issues enforcement action with former employee of Banco Popular de Puerto Rico]]></description>
+            <category>Enforcement Actions</category>
+            <pubDate><![CDATA[Thu, 27 Aug 2026 15:00:00 GMT]]></pubDate>    
+        </item>
+</channel>
+</rss>

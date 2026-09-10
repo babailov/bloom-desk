@@ -11,6 +11,9 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const migrations = await readD1Migrations(path.join(here, "migrations"));
 
 export default defineConfig({
+  // The AAII fixture is a binary .xls. Declaring it an asset lets tests
+  // import it with ?inline as a data URI, since workerd has no fs.
+  assetsInclude: ["**/*.xls"],
   plugins: [
     cloudflareTest({
       wrangler: { configPath: "./wrangler.jsonc" },
