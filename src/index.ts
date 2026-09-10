@@ -4,7 +4,8 @@
  * `fetch` gates every request behind Cloudflare Access, then serves the JSON
  * API and falls through to the static UI. Anonymous browsers get the front
  * door in gate.ts, which links to /enter -- the one path Access still guards
- * at the edge.
+ * at the edge. `/api/ingest/` is the exception the gate makes for machines,
+ * which carry a bearer token instead; see ingest.ts.
  *
  * `scheduled` runs the cron-driven fetchers, dispatching on which expression
  * fired. The three daily jobs are Workflows with schedules attached to their
@@ -20,6 +21,7 @@ import { Hono } from "hono";
 import { createApi } from "./api";
 import { requireAccess } from "./auth";
 import { getBytes, getText, postJson } from "./http";
+import { createIngest } from "./ingest";
 import { runCronGroup } from "./jobs";
 import { Store } from "./store";
 
@@ -38,6 +40,12 @@ app.use("*", requireAccess());
 // then the gate above has verified that cookie, so all that is left is to hand
 // the visitor to the terminal.
 app.get("/enter", (c) => c.redirect("/", 302));
+
+// The push path for data the Worker cannot fetch itself. Registered after the
+// gate like everything else -- the gate is what decides that this prefix is
+// authenticated by a bearer token rather than an Access JWT, so the route never
+// sees an unauthenticated request. See ingest.ts.
+app.route("/", createIngest());
 
 // The JSON API.
 app.route("/", createApi());

@@ -109,7 +109,7 @@ keyless.
 | [Yahoo Finance](https://finance.yahoo.com/) | Equity index closes and ratio series | — |
 | [ECB Data Portal](https://data.ecb.europa.eu/) | Euro-area AAA yield curve (3M) | — |
 | [Bundesbank](https://www.bundesbank.de/) | German 10Y benchmark | — |
-| ForexFactory mirror | Macro release calendar | — |
+| ForexFactory mirror | Macro release calendar | — |[^push]
 | FT, CNBC, MarketWatch, ECB, Fed | Headlines, via public RSS | — |
 | [Morpho](https://morpho.org/) | Morpho Blue markets, Midnight fixed-term book | — |
 | [Pendle](https://www.pendle.finance/) | Implied APY and expiry | — |
@@ -117,6 +117,10 @@ keyless.
 | [DefiLlama](https://defillama.com/) | APY history backfill | — |
 | [Zyfai](https://zyf.ai/) | USDC opportunity tiers | — |
 | Public RPCs (Base, Ethereum, Arbitrum) | Aave reserve data, read-only `eth_call` | — |
+
+[^push]: On the Cloudflare deployment the calendar is fetched by a scheduled
+    GitHub Actions job and posted to the Worker, because ForexFactory rate-limits
+    Cloudflare's shared egress address. See [docs/macro-ingest.md](docs/macro-ingest.md).
 
 ### Data sources and polite use
 
