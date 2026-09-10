@@ -109,6 +109,26 @@ describe("the ingest credential", () => {
     expect(resp.status).toBe(403);
   });
 
+  it("does not carry past the ingest routes into the static UI", async () => {
+    // The gate hands this prefix over on the token alone, so an unmatched path
+    // must stop here rather than falling through to the asset handler.
+    for (const [path, method] of [
+      ["/api/ingest/macro", "GET"],
+      ["/api/ingest/nothing-here", "POST"],
+    ] as const) {
+      const resp = await worker.fetch!(
+        new Request(`https://bloom.babailov.dev${path}`, {
+          method,
+          headers: { Authorization: `Bearer ${TOKEN}` },
+        }),
+        ingestEnv(),
+        {} as ExecutionContext,
+      );
+      expect(resp.status, `${method} ${path}`).toBe(404);
+      expect(resp.headers.get("Content-Type"), `${method} ${path}`).toContain("application/json");
+    }
+  });
+
   it("buys access to the ingest prefix and nothing else", async () => {
     const resp = await worker.fetch!(
       new Request("https://bloom.babailov.dev/api/dashboard", {
