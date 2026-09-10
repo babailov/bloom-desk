@@ -8,8 +8,9 @@
   "compatibility_flags": ["nodejs_compat"],
   // The *.workers.dev route is off: it cannot sit behind Cloudflare Access,
   // which needs a zone. The Worker is reachable only through the custom domain
-  // route below, which Access gates. Cron Triggers and Workflows are unaffected
-  // -- they do not go through a route.
+  // bloom.babailov.dev, where the Access application guards /enter and the gate
+  // in src/auth.ts guards everything else. Cron Triggers and Workflows are
+  // unaffected -- they do not go through a route.
   "workers_dev": false,
   "assets": {
     "directory": "./ui",
@@ -18,7 +19,10 @@
     // the Access gate never sees the request: / and /index.html were served
     // unauthenticated while /api/* was correctly refused. Scoping it to a route
     // list would save a few billable invocations on css/js, which is not worth
-    // the second way to get this wrong for a single-user tool.
+    // the second way to get this wrong for a single-user tool. It matters more
+    // now than it did: Access no longer covers the hostname, so this setting is
+    // what puts the gate in front of ui/ at all. ui/gate/ is the exception, and
+    // is public on purpose -- see src/gate.ts.
     "run_worker_first": true
   },
   "triggers": {

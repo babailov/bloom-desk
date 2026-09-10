@@ -2,7 +2,9 @@
  * Worker entry point.
  *
  * `fetch` gates every request behind Cloudflare Access, then serves the JSON
- * API and falls through to the static UI.
+ * API and falls through to the static UI. Anonymous browsers get the front
+ * door in gate.ts, which links to /enter -- the one path Access still guards
+ * at the edge.
  *
  * `scheduled` runs the cron-driven fetchers, dispatching on which expression
  * fired. The three daily jobs are Workflows with schedules attached to their
@@ -29,6 +31,13 @@ const app = new Hono<{ Bindings: Env }>();
 // gate must be registered before anything it protects; registering it after the
 // routes leaves them wide open. There is a test for exactly that.
 app.use("*", requireAccess());
+
+// The one path Cloudflare Access still covers at the edge. An anonymous
+// browser never gets this far: Access intercepts it, runs the login, sets
+// CF_Authorization for the whole hostname and sends the browser back here. By
+// then the gate above has verified that cookie, so all that is left is to hand
+// the visitor to the terminal.
+app.get("/enter", (c) => c.redirect("/", 302));
 
 // The JSON API.
 app.route("/", createApi());

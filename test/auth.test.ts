@@ -132,6 +132,72 @@ describe("route coverage", () => {
       expect(resp.status, `${path} should be gated`).toBe(401);
     }
   });
+
+  it("gates /enter too, so the front door cannot be walked through", async () => {
+    // Access guards this path at the edge, but the edge is not what is trusted
+    // here: without a token the Worker must refuse it like any other page.
+    expect((await call("/enter")).status).toBe(401);
+  });
+
+  it("sends an authenticated visitor from /enter to the terminal", async () => {
+    const resp = await call("/enter", { "Cf-Access-Jwt-Assertion": await token() });
+    expect(resp.status).toBe(302);
+    expect(resp.headers.get("Location")).toBe("/");
+  });
+});
+
+describe("the signed-out front door", () => {
+  // The page exists so a browser sees os-bloom rather than Cloudflare's login
+  // screen. What must not drift is which callers get it: a machine parsing
+  // /api/* JSON should never start receiving HTML.
+  it("answers a page request with the sign-in page, not JSON", async () => {
+    const resp = await call("/");
+    expect(resp.status).toBe(401);
+    expect(resp.headers.get("Content-Type")).toMatch(/text\/html/);
+
+    const body = await resp.text();
+    expect(body).toContain("OS-BLOOM");
+    expect(body).toContain('href="/enter"');
+  });
+
+  it("tells a rejected identity why, and offers a way back out", async () => {
+    const resp = await call("/", { "Cf-Access-Jwt-Assertion": await token({ aud: "someone-elses-app" }) });
+    expect(resp.status).toBe(403);
+
+    const body = await resp.text();
+    expect(body).toContain("NOT ADMITTED");
+    expect(body).toContain(`${TEAM}/cdn-cgi/access/logout`);
+  });
+
+  it("keeps answering the API and healthz in JSON", async () => {
+    for (const path of ["/api/dashboard", "/healthz"]) {
+      const resp = await call(path);
+      expect(resp.headers.get("Content-Type"), path).toMatch(/application\/json/);
+      expect(await resp.json(), path).toEqual({ detail: "missing Access token" });
+    }
+  });
+
+  it("serves its artwork without a token, and nothing else", async () => {
+    // /gate/* is the one hole in the gate. It must stay exactly that wide: the
+    // artwork through, and no path that merely mentions it.
+    // 404 until the artwork is added, 200 once it is. What is asserted is the
+    // only part that is this test's business: the gate did not refuse it.
+    expect([401, 403]).not.toContain((await call("/gate/hero.jpg")).status);
+
+    for (const path of ["/gate", "/index.html?x=/gate/", "/api/gate/hero.jpg"]) {
+      expect((await call(path)).status, `${path} must stay gated`).toBe(401);
+    }
+  });
+
+  it("stays JSON on every path while the gate is unconfigured", async () => {
+    // An operator staring at a 503 is reading logs, not admiring a page -- and
+    // an unconfigured gate must refuse the artwork too.
+    for (const path of ["/", "/gate/hero.jpg", "/api/dashboard"]) {
+      const resp = await call(path, {}, baseEnv());
+      expect(resp.status, path).toBe(503);
+      expect(resp.headers.get("Content-Type"), path).toMatch(/application\/json/);
+    }
+  });
 });
 
 describe("token validation", () => {

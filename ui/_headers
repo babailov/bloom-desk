@@ -6,6 +6,11 @@
 /vendor/*
   Cache-Control: public, max-age=604800
 
+# The signed-out front door's artwork. Public by design and changed only when it
+# is replaced, so it can be cached like a vendor asset.
+/gate/*
+  Cache-Control: public, max-age=604800
+
 # Everything else: no-cache = store but revalidate every request, so deploys
 # show up on next load via cheap ETag/304s. Without this, browsers
 # heuristically cache ES modules and can run stale JS for hours after a deploy.
