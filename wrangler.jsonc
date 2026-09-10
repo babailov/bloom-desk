@@ -53,6 +53,14 @@
       "schedules": ["0 7 * * *"]
     }
   ],
+  "vars": {
+    // Neither of these is a secret: the team domain is a public hostname and
+    // the audience tag appears in every Access JWT. They are config, and the
+    // gate refuses everything until both are set.
+    "ACCESS_TEAM_DOMAIN": "nbabailov.cloudflareaccess.com",
+    "ACCESS_ALLOWED_EMAILS": "nbabailov@gmail.com",
+    "ACCESS_AUD": "4ece4cc9818dae263c1bbe11ba245a427e705643f0f7a37d96c3da1b03834e27"
+  },
   "d1_databases": [
     {
       "binding": "DB",

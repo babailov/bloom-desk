@@ -48,7 +48,23 @@ async function token(over: {
     .sign(privateKey);
 }
 
-const configured = { ...env, ACCESS_TEAM_DOMAIN: TEAM, ACCESS_AUD: AUD };
+/**
+ * A base env with the real Access settings stripped.
+ *
+ * wrangler.jsonc carries the live ACCESS_* vars, and vitest surfaces them on
+ * `env`. Spreading that directly made these tests assert against deployment
+ * config rather than their own fixtures: the "unconfigured" case silently
+ * became configured, and the real allow list rejected the test identity.
+ */
+function baseEnv(): Env {
+  const { ACCESS_TEAM_DOMAIN, ACCESS_AUD, ACCESS_ALLOWED_EMAILS, ...rest } = env;
+  void ACCESS_TEAM_DOMAIN;
+  void ACCESS_AUD;
+  void ACCESS_ALLOWED_EMAILS;
+  return rest as Env;
+}
+
+const configured = { ...baseEnv(), ACCESS_TEAM_DOMAIN: TEAM, ACCESS_AUD: AUD };
 
 function call(path: string, headers: Record<string, string> = {}, e: unknown = configured) {
   return worker.fetch!(
@@ -72,7 +88,7 @@ describe("fails closed", () => {
   it("refuses every route when the gate is unconfigured", async () => {
     // Unconfigured must mean nobody gets in, never everybody.
     for (const path of ["/", "/healthz", "/api/dashboard", "/api/series/SPX"]) {
-      const resp = await call(path, {}, { ...env });
+      const resp = await call(path, {}, baseEnv());
       expect(resp.status, path).toBe(503);
     }
   });
@@ -184,17 +200,17 @@ describe("email allow list", () => {
 
 describe("readAccessConfig", () => {
   it("returns null unless both team domain and audience are set", () => {
-    expect(readAccessConfig({ ...env } as Env)).toBeNull();
-    expect(readAccessConfig({ ...env, ACCESS_TEAM_DOMAIN: TEAM } as Env)).toBeNull();
-    expect(readAccessConfig({ ...env, ACCESS_AUD: AUD } as Env)).toBeNull();
+    expect(readAccessConfig(baseEnv())).toBeNull();
+    expect(readAccessConfig({ ...baseEnv(), ACCESS_TEAM_DOMAIN: TEAM })).toBeNull();
+    expect(readAccessConfig({ ...baseEnv(), ACCESS_AUD: AUD })).toBeNull();
   });
 
   it("normalizes a bare team domain to an https origin", () => {
     const cfg = readAccessConfig({
-      ...env,
+      ...baseEnv(),
       ACCESS_TEAM_DOMAIN: "bloom.cloudflareaccess.com/",
       ACCESS_AUD: AUD,
-    } as Env);
+    });
     expect(cfg?.teamDomain).toBe("https://bloom.cloudflareaccess.com");
   });
 });
