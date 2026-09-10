@@ -16,6 +16,34 @@ import * as fred from "./fred";
 import * as oecd from "./oecd";
 import * as yahoo from "./yahoo";
 
+/**
+ * Fetch, range-filter and store one cycle series. Returns the number of points
+ * written.
+ *
+ * Exported as its own unit so the daily Workflow can make each series a
+ * `step.do()`: a failure at series 30 then resumes at 30 instead of refetching
+ * the 29 that already succeeded.
+ */
+export async function fetchCycleSeries(
+  cfg: CycleSeriesCfg,
+  store: Store,
+  fredApiKey: string,
+  getText: GetText,
+  getBytes: GetBytes,
+  today?: string,
+): Promise<number> {
+  let points = await fetchOne(cfg, fredApiKey, getText, getBytes, today);
+
+  if (cfg.valid_range) {
+    const [lo, hi] = cfg.valid_range;
+    points = points.filter(([, v]) => v >= lo && v <= hi);
+    // Upsert alone never removes points a feed served while it was corrupt.
+    await store.pruneOutsideRange(`cycle:${cfg.id}`, lo, hi);
+  }
+
+  return store.upsertRecentPoints(`cycle:${cfg.id}`, points);
+}
+
 async function fetchOne(
   cfg: CycleSeriesCfg,
   fredApiKey: string,
@@ -50,16 +78,7 @@ export async function fetchCycle(
 
   for (const cfg of series) {
     try {
-      let points = await fetchOne(cfg, fredApiKey, getText, getBytes, today);
-
-      if (cfg.valid_range) {
-        const [lo, hi] = cfg.valid_range;
-        points = points.filter(([, v]) => v >= lo && v <= hi);
-        // Upsert alone never removes points a feed served while it was corrupt.
-        await store.pruneOutsideRange(`cycle:${cfg.id}`, lo, hi);
-      }
-
-      await store.upsertRecentPoints(`cycle:${cfg.id}`, points);
+      await fetchCycleSeries(cfg, store, fredApiKey, getText, getBytes, today);
     } catch (exc) {
       errors.push(`${cfg.id}: ${String(exc)}`); // per-series isolation
     }

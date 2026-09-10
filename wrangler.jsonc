@@ -10,6 +10,38 @@
     "directory": "./ui",
     "binding": "ASSETS"
   },
+  "triggers": {
+    // One expression per cadence in config.yaml. Cloudflare dispatches an
+    // invocation per matching expression, so :00 fires each separately.
+    "crons": [
+      "*/5 * * * *",
+      "*/10 * * * *",
+      "*/15 * * * *",
+      "0 * * * *"
+    ]
+  },
+  "workflows": [
+    {
+      // 39 series. The reason this is a Workflow at all: a failure at series 30
+      // resumes at 30 rather than refetching the 29 that succeeded.
+      "name": "bloom-cycle",
+      "binding": "CYCLE_WORKFLOW",
+      "class_name": "CycleWorkflow",
+      "schedules": ["0 6 * * *"]
+    },
+    {
+      "name": "bloom-macro-history",
+      "binding": "MACRO_HISTORY_WORKFLOW",
+      "class_name": "MacroHistoryWorkflow",
+      "schedules": ["30 6 * * *"]
+    },
+    {
+      "name": "bloom-refs-history",
+      "binding": "REFS_HISTORY_WORKFLOW",
+      "class_name": "RefsHistoryWorkflow",
+      "schedules": ["0 7 * * *"]
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",

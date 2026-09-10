@@ -40,6 +40,21 @@ export interface SeriesCfg {
 }
 
 /**
+ * Fetch and store one macro series. Returns the number of points written.
+ *
+ * Exported as its own unit so the daily Workflow can make each series a
+ * `step.do()` and resume mid-list rather than refetching from the top.
+ */
+export async function fetchMacroSeries(
+  cfg: SeriesCfg,
+  store: Store,
+  apiKey: string,
+  getText: GetText,
+): Promise<number> {
+  return store.upsertRecentPoints(`macro:${cfg.id}`, await fetchSeries(cfg.fred, apiKey, getText));
+}
+
+/**
  * Daily job: raw history for every configured macro series.
  *
  * Raw values are stored; transforms are applied at read time by the API, so a
@@ -55,7 +70,7 @@ export async function fetchMacroHistory(
   const errors: string[] = [];
   for (const cfg of series) {
     try {
-      await store.upsertRecentPoints(`macro:${cfg.id}`, await fetchSeries(cfg.fred, apiKey, getText));
+      await fetchMacroSeries(cfg, store, apiKey, getText);
     } catch (exc) {
       errors.push(`${cfg.id}: ${String(exc)}`); // per-series isolation
     }
