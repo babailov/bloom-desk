@@ -14,7 +14,7 @@
     {
       "binding": "DB",
       "database_name": "bloom",
-      "database_id": "PLACEHOLDER_SET_BY_WRANGLER_D1_CREATE",
+      "database_id": "2e6ac209-9017-4c1a-9e5c-e0b281b85c82",
       "migrations_dir": "migrations"
     }
   ]
