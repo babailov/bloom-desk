@@ -14,9 +14,11 @@
  *   See src/workflows.ts.
  *
  * Cadences come from config.yaml unchanged; CRON_JOBS maps each expression to
- * the jobs whose cadence it represents. Keep the two in sync -- assertCadences
- * checks them against the config at test time.
+ * the jobs whose cadence it represents. A test asserts the two against each
+ * other, so a hand-edited expression that changes how often an upstream is hit
+ * fails the suite rather than shipping.
  */
+import { toBands } from "./changes";
 import { config } from "./config.data";
 import { fetchBonds } from "./fetchers/bonds";
 import { fetchDefi } from "./fetchers/zyfai";
@@ -27,6 +29,7 @@ import { fetchMorpho } from "./fetchers/morpho";
 import { fetchNews } from "./fetchers/news";
 import { fetchRefs } from "./fetchers/refs";
 import type { GetBytes, GetText, PostJson } from "./http";
+import { DASHBOARD_DOC, RECESSIONS_DOC, buildDashboard } from "./panels";
 import { runFetcher, type FetchFn } from "./runner";
 import type { Store } from "./store";
 
@@ -102,7 +105,47 @@ export async function runCronGroup(cron: string, deps: JobDeps): Promise<string[
     }
     await runFetcher(name, deps.store, fn);
   }
+
+  // Derived docs follow the data that just landed. Outside runFetcher on
+  // purpose: a rebuild failure is a bug in our own code, not an upstream
+  // outage, and should not be filed against a fetcher's health.
+  await rebuildDashboard(deps.store);
+
   return [...names];
+}
+
+/**
+ * Recompute the dashboard doc that /api/dashboard serves.
+ *
+ * The Python built this per request. Moving it here is the single biggest
+ * latency and cost decision in the port: the request path now reads one row
+ * instead of scanning every index and every cycle series.
+ *
+ * The cost lands here instead, on every cron group, because equity quotes move
+ * every five minutes and the panel has to follow them. That is roughly 2% of
+ * the included D1 read allowance. If it ever matters, the cycle panel is the
+ * expensive half and only changes daily, so it could be cached separately.
+ */
+export async function rebuildDashboard(store: Store, now: Date = new Date()): Promise<void> {
+  const payload = await buildDashboard(
+    store,
+    config.indexes,
+    now,
+    config.cycle_series,
+    config.cycle_tabs,
+  );
+  await store.putDoc(DASHBOARD_DOC, payload, "dashboard");
+}
+
+/**
+ * Recompute the NBER recession bands /api/recessions serves.
+ *
+ * Only the daily cycle job moves cycle:usrec, so this runs there rather than on
+ * every cron tick.
+ */
+export async function rebuildRecessions(store: Store): Promise<void> {
+  const bands = toBands(await store.points("cycle:usrec"));
+  await store.putDoc(RECESSIONS_DOC, { bands }, "cycle");
 }
 
 /**

@@ -8,6 +8,7 @@ import YAHOO_SPX from "./fixtures/yahoo_spx.json?raw";
 import { config } from "../src/config.data";
 import { ALL_JOB_NAMES, CRON_JOBS, CRON_SECONDS, cronJobs, runCronGroup } from "../src/jobs";
 import { FETCH_RETRIES, runMacroHistory, type WorkflowDeps } from "../src/workflows";
+import { DASHBOARD_DOC } from "../src/panels";
 import { Store } from "../src/store";
 import worker from "../src/index";
 
@@ -177,10 +178,14 @@ describe("per-series workflow", () => {
     const out = await runMacroHistory(step.asStep(), deps(async () => FRED_JSON));
 
     expect(out).toEqual({ series: config.series.length, failed: 0 });
-    // one step per series, plus the status step
-    expect(step.completed.size).toBe(config.series.length + 1);
+    // one step per series, plus record-status and rebuild-dashboard
+    expect(step.completed.size).toBe(config.series.length + 2);
     expect([...step.completed.keys()]).toContain(`macro:${config.series[0]!.id}`);
+    expect([...step.completed.keys()]).toContain("rebuild-dashboard");
     expect((await store().status("macro_history"))?.last_success).not.toBeNull();
+
+    // the dashboard doc the API serves now exists
+    expect(await store().doc(DASHBOARD_DOC)).not.toBeNull();
   });
 
   it("isolates a failing series and records the failure count", async () => {

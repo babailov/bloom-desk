@@ -1,0 +1,13 @@
+# Workers Static Assets equivalent of the two rules in nginx.conf.
+# nginx.conf stays until collector/ is deleted: docker-compose still builds the
+# Python reference stack the parity diff runs against.
+
+# Vendor libs change only on manual upgrade.
+/vendor/*
+  Cache-Control: public, max-age=604800
+
+# Everything else: no-cache = store but revalidate every request, so deploys
+# show up on next load via cheap ETag/304s. Without this, browsers
+# heuristically cache ES modules and can run stale JS for hours after a deploy.
+/*
+  Cache-Control: no-cache

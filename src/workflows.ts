@@ -28,6 +28,7 @@ import { fetchCycleSeries } from "./fetchers/cycle";
 import { fetchMacroSeries } from "./fetchers/fred";
 import { fetchRefsHistory } from "./fetchers/refs-history";
 import { getBytes, getText, type GetBytes, type GetText } from "./http";
+import { rebuildDashboard, rebuildRecessions } from "./jobs";
 import { Store } from "./store";
 
 export interface WorkflowDeps {
@@ -103,13 +104,33 @@ async function runPerSeries<T extends { id: string }>(
     return null;
   });
 
+  await step.do("rebuild-dashboard", async () => {
+    await rebuildDashboard(store);
+    return null;
+  });
+
   return { series: results.length, failed: results.filter((r) => r.error !== undefined).length };
 }
 
-export function runCycle(step: WorkflowStep, deps: WorkflowDeps) {
-  return runPerSeries(step, config.cycle_series, "cycle", "cycle", "cycle", deps.store, (cfg) =>
-    fetchCycleSeries(cfg, deps.store, deps.fredApiKey, deps.getText, deps.getBytes),
+export async function runCycle(step: WorkflowStep, deps: WorkflowDeps) {
+  const out = await runPerSeries(
+    step,
+    config.cycle_series,
+    "cycle",
+    "cycle",
+    "cycle",
+    deps.store,
+    (cfg) => fetchCycleSeries(cfg, deps.store, deps.fredApiKey, deps.getText, deps.getBytes),
   );
+
+  // cycle:usrec only moves here, so the recession bands rebuild here too rather
+  // than on every cron tick.
+  await step.do("rebuild-recessions", async () => {
+    await rebuildRecessions(deps.store);
+    return null;
+  });
+
+  return out;
 }
 
 export function runMacroHistory(step: WorkflowStep, deps: WorkflowDeps) {
